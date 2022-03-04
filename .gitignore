@@ -4,3 +4,4 @@ xmonad.o
 xmonad-x86_64-linux
 *.swp
 xmonad.state
+nohup.out

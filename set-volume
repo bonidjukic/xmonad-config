@@ -1,0 +1,27 @@
+#!/bin/bash
+
+sinks=`pactl list short sinks | grep bluez_sink`
+sinks_arr=($sinks)
+sink_id=${sinks_arr[0]}
+
+curr_vol=`pacmd list-sinks \
+            | grep -A 15 '* index'\
+            | awk '/volume: front/{ print $5 }' \
+            | sed 's/[%|,]//g'`
+
+if [ ${1} == "up" ]
+then
+    step_pactl="+5%"
+    step_amixer="5%+"
+else
+    step_pactl="-5%"
+    step_amixer="5%-"
+fi
+
+
+
+echo $step_pactl
+echo $curr_vol
+
+pactl set-sink-volume $sink_id $step_pactl
+amixer -q set Master $step_amixer
